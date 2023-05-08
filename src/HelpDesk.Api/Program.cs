@@ -1,13 +1,18 @@
 using HelpDesk.Api.Services;
 using HelpDesk.Application;
 using HelpDesk.Application.Interfaces.Services;
+using HelpDesk.Domain.Data;
 using HelpDesk.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using HelpDesk.Domain.Data;
+using HelpDesk.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 // Configure Services
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
 // TODO: Remove this line if you want to return the Server header
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
