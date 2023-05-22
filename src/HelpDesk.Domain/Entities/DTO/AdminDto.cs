@@ -6,16 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using HelpDesk.Domain.Common;
 
-namespace HelpDesk.Domain.Entities
+namespace HelpDesk.Domain.Entities.DTO
 {
-    public class Admin: AuditableEntity
+    public class AdminDto: AuditableEntity
     {
-        [Key]
-        [Required]
-        public int AdminId { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
+       
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -23,6 +18,7 @@ namespace HelpDesk.Domain.Entities
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
+        [DataType (DataType.Password)]  
         public string ConfirmPassword { get; set; }
     }
 }

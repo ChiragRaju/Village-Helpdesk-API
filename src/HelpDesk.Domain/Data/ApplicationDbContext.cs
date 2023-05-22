@@ -13,6 +13,7 @@ namespace HelpDesk.Domain.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+        public DbSet<LocalUsers> localUsersDb { get;set; }
         public DbSet<User> usersDB { get; set; }
         public DbSet<Admin> adminDB { get; set; }
         public DbSet<Worker> workerDB { get; set; }
