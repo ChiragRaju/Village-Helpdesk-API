@@ -20,5 +20,8 @@ namespace HelpDesk.Domain.Entities.DTO
         [Required]
         [DataType (DataType.Password)]  
         public string ConfirmPassword { get; set; }
+        public Admin admin { get; set; }
+        
+       
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HelpDesk.Domain.Entities.DTO
 {
-    public class LoginResponseDTO
+    public class LoginRequestUserDTO
     {
-        public Admin admin { get; set; }
-        public string Token { get; set; }
+        public string AadharNumber { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

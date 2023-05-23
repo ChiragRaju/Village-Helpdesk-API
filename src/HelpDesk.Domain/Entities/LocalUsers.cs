@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HelpDesk.Domain.Common;
 
 namespace HelpDesk.Domain.Entities
 {
-    public class LocalUsers
+    public class LocalUsers: AuditableEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

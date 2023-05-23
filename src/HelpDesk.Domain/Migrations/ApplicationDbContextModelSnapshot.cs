@@ -62,6 +62,32 @@ namespace HelpDesk.Domain.Migrations
                     b.HasKey("AdminId");
 
                     b.ToTable("adminDB");
+
+                    b.HasData(
+                        new
+                        {
+                            AdminId = 1,
+                            ConfirmPassword = "shanu548115@",
+                            CreatedBy = 1,
+                            CreatedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(909),
+                            Email = "shanu@gmail.com",
+                            ModifiedBy = 1,
+                            ModifiedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(920),
+                            Name = "Shanu Kumar",
+                            Password = "shanu548115@"
+                        },
+                        new
+                        {
+                            AdminId = 2,
+                            ConfirmPassword = "sid@",
+                            CreatedBy = 2,
+                            CreatedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(929),
+                            Email = "sid@gmail.com",
+                            ModifiedBy = 1,
+                            ModifiedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(930),
+                            Name = "Siddhant Kashyap",
+                            Password = "sid@"
+                        });
                 });
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.LocalUsers", b =>
@@ -87,6 +113,12 @@ namespace HelpDesk.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -99,6 +131,12 @@ namespace HelpDesk.Domain.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -160,9 +198,10 @@ namespace HelpDesk.Domain.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FirstName")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -181,6 +220,10 @@ namespace HelpDesk.Domain.Migrations
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,11 @@ namespace HelpDesk.Domain.Entities
     public class User: AuditableEntity
     {
         [Key]
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         [Required]
         [MaxLength(50)]
-        public int FirstName { get; set; }
+        public string FirstName { get; set; }
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; }
@@ -33,5 +34,7 @@ namespace HelpDesk.Domain.Entities
         [Required]
         [MaxLength(12)]
         public string PhoneNumber { get; set; }
+        [Required]
+        public string Role { get;set; }
     }
 }

@@ -9,10 +9,16 @@ using Microsoft.OpenApi.Models;
 using HelpDesk.Domain.Data;
 using HelpDesk.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using HelpDesk.Domain.Repository.IRepository;
+using HelpDesk.Domain.Repository;
+using HelpDesk.Api.Repository.IRepository;
+using HelpDesk.Api.Repository;
 
 // Configure Services
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 // TODO: Remove this line if you want to return the Server header
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 

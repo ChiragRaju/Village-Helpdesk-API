@@ -14,69 +14,86 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HelpDesk.Domain.Repository
 {
-    public class UserRepository //:IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _context;
         private string secretKey;
 
-        public UserRepository(ApplicationDbContext context,IConfiguration configuration)
+        public UserRepository(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             secretKey = configuration.GetValue<string>("ApiSettings:Secret");
         }
+        
+        public bool isUnique(string Aadharnumber)
+        {
+            var user = _context.usersDB.FirstOrDefault(x => x.AadharNumber == Aadharnumber);
 
-        //public bool isUnique(string aadharnumber, string email)
-        //{
-        //    var user = _context.localUsersDb.FirstOrDefault(x => x.AadharNumber == aadharnumber);
-        //    var admin = _context.localUsersDb.FirstOrDefault(y => y.Email == email);
-        //    if (user == null || admin == null)
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
+            if (user == null)
+            {
+                return true;
+            }
+            return false;
+        }
 
-        //public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
-        //{
-        //    var admin = _context.localUsersDb.FirstOrDefault(u => u.Email.ToLower() == loginRequestDTO.Email.ToLower() && u.Password == loginRequestDTO.Password);
-        //    var user = _context.localUsersDb.FirstOrDefault(u => u.AadharNumber == loginRequestDTO.ANumber && u.PhoneNumber == loginRequestDTO.PNumber);
-        //    if (admin == null || user == null)
-        //    {
-        //        return null;
-        //    }
-        //    //if user and admin was found generate JWT Token
-        //    var tokenhandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(secretKey);
+        
 
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
-        //        {
-        //            new Claim(ClaimTypes.Email,admin.AdminId.ToString()),
-        //            new Claim(ClaimTypes.,user.Password),
-        //        })
-        //    }
+        public async Task<LoginResponseUserDTO> Login(LoginRequestUserDTO loginRequestuserDTO)
+        {
 
-       // }
+            var user = _context.usersDB.FirstOrDefault(u => u.AadharNumber == loginRequestuserDTO.AadharNumber && u.PhoneNumber == loginRequestuserDTO.PhoneNumber);
+            if (user == null)
+            {
+                return new LoginResponseUserDTO()
+                {
+                    Token = "",
+                    user = null
+                };
+            }
+            //if user was found generate JWT Token
+            var tokenhandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey);
 
-        //public async Task<LocalUsers> Register(RegistrationRequestDTO registrationRequestDTO)
-        //{
-        //    LocalUsers localUsers = new()
-        //    {
-        //        FirstName = registrationRequestDTO.FirstName,
-        //        LastName = registrationRequestDTO.LastName,
-        //        AadharNumber = registrationRequestDTO.AadharNumber,
-        //        Address = registrationRequestDTO.Address,
-        //        City = registrationRequestDTO.City,
-        //        PostalCode = registrationRequestDTO.PostalCode,
-        //        State = registrationRequestDTO.State,
-        //        PhoneNumber = registrationRequestDTO.PhoneNumber,
-        //        Email = registrationRequestDTO.Email               
-        //    };
-        //    _context.localUsersDb.Add(localUsers);
-        //    await _context.SaveChangesAsync();
-        //    localUsers.Password = "";
-        //    return localUsers;
-        //}
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
+                {
+                    //new Claim(ClaimTypes.Role,user.Role),
+                    new Claim(ClaimTypes.MobilePhone,user.UserId.ToString()),
+                    new Claim(ClaimTypes.SerialNumber,user.AadharNumber)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenhandler.CreateToken(tokenDescriptor);
+            LoginResponseUserDTO loginResponseuser2DTO = new LoginResponseUserDTO()
+            {
+                Token = tokenhandler.WriteToken(token),
+                user = user
+            };
+            return loginResponseuser2DTO;
+        }
+
+        public async Task<User> Register(RegistrationRequestDTO registrationRequestDTO)
+        {
+
+            User user = new()
+            {
+                FirstName = registrationRequestDTO.FirstName,
+                LastName = registrationRequestDTO.LastName,
+                AadharNumber = registrationRequestDTO.AadharNumber,
+                Address = registrationRequestDTO.Address,
+                City = registrationRequestDTO.City,
+                PostalCode = registrationRequestDTO.PostalCode,
+                State = registrationRequestDTO.State,
+                PhoneNumber = registrationRequestDTO.PhoneNumber,
+                Role = registrationRequestDTO.Role
+                //Email = registrationRequestDTO.Email
+            };
+            _context.usersDB.Add(user);
+            await _context.SaveChangesAsync();
+            user.AadharNumber = "";
+            return user;
+        }
     }
 }

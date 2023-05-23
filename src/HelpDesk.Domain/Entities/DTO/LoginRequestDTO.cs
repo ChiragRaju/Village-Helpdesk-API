@@ -10,7 +10,6 @@ namespace HelpDesk.Domain.Entities.DTO
     {
         public string Email { get; set; }
         public string Password { get; set; }
-        public string ANumber { get; set; }
-        public string PNumber { get; set; }
+       
     }
 }
