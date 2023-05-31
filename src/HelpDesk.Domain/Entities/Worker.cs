@@ -21,5 +21,7 @@ namespace HelpDesk.Domain.Entities
         public string Description { get; set; }
         [Required]
         public int RoleId { get; set; }
+
+        public ICollection<Issue> Issues { get; set; }  
     }
 }

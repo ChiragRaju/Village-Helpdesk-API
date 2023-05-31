@@ -17,6 +17,9 @@ namespace HelpDesk.Domain.Data
         public DbSet<User> usersDB { get; set; }
         public DbSet<Admin> adminDB { get; set; }
         public DbSet<Worker> workerDB { get; set; }
+        public DbSet<Issue> issueDB { get; set; }
+        public DbSet<Feedback> feedbackDB { get; set; } 
+        public DbSet<Status> statusDB { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Admin>().HasData(
@@ -45,6 +48,22 @@ namespace HelpDesk.Domain.Data
                     ModifiedOn = DateTime.Now
                 }
                 );
+            modelBuilder.Entity<Feedback>()
+                .HasOne(f => f.user)
+                .WithMany()
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Feedback>()
+               .HasOne(f => f.status)
+               .WithMany()
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Feedback>()
+               .HasOne(f => f.issue)
+               .WithMany()
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
+           
         }
     }
 }

@@ -69,10 +69,10 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 1,
                             ConfirmPassword = "shanu548115@",
                             CreatedBy = 1,
-                            CreatedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(909),
+                            CreatedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5485),
                             Email = "shanu@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(920),
+                            ModifiedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5500),
                             Name = "Shanu Kumar",
                             Password = "shanu548115@"
                         },
@@ -81,13 +81,113 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 2,
                             ConfirmPassword = "sid@",
                             CreatedBy = 2,
-                            CreatedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(929),
+                            CreatedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5513),
                             Email = "sid@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(930),
+                            ModifiedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5515),
                             Name = "Siddhant Kashyap",
                             Password = "sid@"
                         });
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Feedback", b =>
+                {
+                    b.Property<int>("FeedBackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedBackId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedBackId");
+
+                    b.HasIndex("IssueId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("feedbackDB");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Issue", b =>
+                {
+                    b.Property<int>("IssueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IssueId"));
+
+                    b.Property<int?>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IssueId");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("issueDB");
                 });
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.LocalUsers", b =>
@@ -169,6 +269,35 @@ namespace HelpDesk.Domain.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("localUsersDb");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Status", b =>
+                {
+                    b.Property<int>("StatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StatusDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StatusId");
+
+                    b.ToTable("statusDB");
                 });
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.User", b =>
@@ -274,6 +403,64 @@ namespace HelpDesk.Domain.Migrations
                     b.ToTable("workerDB");
                 });
 
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Feedback", b =>
+                {
+                    b.HasOne("HelpDesk.Domain.Entities.Issue", "issue")
+                        .WithMany()
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpDesk.Domain.Entities.Status", "status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpDesk.Domain.Entities.User", "user")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("issue");
+
+                    b.Navigation("status");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Issue", b =>
+                {
+                    b.HasOne("HelpDesk.Domain.Entities.Admin", "admin")
+                        .WithMany("Issues")
+                        .HasForeignKey("AdminId");
+
+                    b.HasOne("HelpDesk.Domain.Entities.Status", "status")
+                        .WithMany("Issues")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HelpDesk.Domain.Entities.User", "user")
+                        .WithMany("Issues")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HelpDesk.Domain.Entities.Worker", "worker")
+                        .WithMany("Issues")
+                        .HasForeignKey("WorkerId");
+
+                    b.Navigation("admin");
+
+                    b.Navigation("status");
+
+                    b.Navigation("user");
+
+                    b.Navigation("worker");
+                });
+
             modelBuilder.Entity("HelpDesk.Domain.Entities.LocalUsers", b =>
                 {
                     b.HasOne("HelpDesk.Domain.Entities.Admin", "admin")
@@ -291,6 +478,26 @@ namespace HelpDesk.Domain.Migrations
                     b.Navigation("admin");
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Admin", b =>
+                {
+                    b.Navigation("Issues");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Status", b =>
+                {
+                    b.Navigation("Issues");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Issues");
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.Worker", b =>
+                {
+                    b.Navigation("Issues");
                 });
 #pragma warning restore 612, 618
         }

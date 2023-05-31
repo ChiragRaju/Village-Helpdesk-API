@@ -20,5 +20,11 @@ namespace HelpDesk.Domain.Entities
         public string Description { get; set; }
         [Required]
         public float Rating { get; set; }
+        [ForeignKey("Issue")]
+        public int IssueId { get;set; }
+        public Issue issue { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User user { get; set; }
     }
 }

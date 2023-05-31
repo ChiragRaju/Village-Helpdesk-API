@@ -19,6 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IUserCrudRepository, UserCrudRepository>();
+builder.Services.AddScoped<IIssueCrudRepository, IssueCrudRepository>();
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 // TODO: Remove this line if you want to return the Server header
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HelpDesk.Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class logindetails : Migration
+    public partial class status : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,23 @@ namespace HelpDesk.Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_adminDB", x => x.AdminId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "statusDB",
+                columns: table => new
+                {
+                    StatusId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_statusDB", x => x.StatusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,14 +135,132 @@ namespace HelpDesk.Domain.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "issueDB",
+                columns: table => new
+                {
+                    IssueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: true),
+                    WorkerId = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_issueDB", x => x.IssueId);
+                    table.ForeignKey(
+                        name: "FK_issueDB_adminDB_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "adminDB",
+                        principalColumn: "AdminId");
+                    table.ForeignKey(
+                        name: "FK_issueDB_statusDB_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "statusDB",
+                        principalColumn: "StatusId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_issueDB_usersDB_UserId",
+                        column: x => x.UserId,
+                        principalTable: "usersDB",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_issueDB_workerDB_WorkerId",
+                        column: x => x.WorkerId,
+                        principalTable: "workerDB",
+                        principalColumn: "WorkerId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "feedbackDB",
+                columns: table => new
+                {
+                    FeedBackId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<float>(type: "real", nullable: false),
+                    IssueId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_feedbackDB", x => x.FeedBackId);
+                    table.ForeignKey(
+                        name: "FK_feedbackDB_issueDB_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "issueDB",
+                        principalColumn: "IssueId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_feedbackDB_statusDB_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "statusDB",
+                        principalColumn: "StatusId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_feedbackDB_usersDB_UserId",
+                        column: x => x.UserId,
+                        principalTable: "usersDB",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "adminDB",
                 columns: new[] { "AdminId", "ConfirmPassword", "CreatedBy", "CreatedOn", "Email", "ModifiedBy", "ModifiedOn", "Name", "Password" },
                 values: new object[,]
                 {
-                    { 1, "shanu548115@", 1, new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(909), "shanu@gmail.com", 1, new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(920), "Shanu Kumar", "shanu548115@" },
-                    { 2, "sid@", 2, new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(929), "sid@gmail.com", 1, new DateTime(2023, 5, 23, 15, 46, 33, 432, DateTimeKind.Local).AddTicks(930), "Siddhant Kashyap", "sid@" }
+                    { 1, "shanu548115@", 1, new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5485), "shanu@gmail.com", 1, new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5500), "Shanu Kumar", "shanu548115@" },
+                    { 2, "sid@", 2, new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5513), "sid@gmail.com", 1, new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5515), "Siddhant Kashyap", "sid@" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbackDB_IssueId",
+                table: "feedbackDB",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbackDB_StatusId",
+                table: "feedbackDB",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feedbackDB_UserId",
+                table: "feedbackDB",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_issueDB_AdminId",
+                table: "issueDB",
+                column: "AdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_issueDB_StatusId",
+                table: "issueDB",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_issueDB_UserId",
+                table: "issueDB",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_issueDB_WorkerId",
+                table: "issueDB",
+                column: "WorkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_localUsersDb_AdminId",
@@ -142,16 +277,25 @@ namespace HelpDesk.Domain.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "feedbackDB");
+
+            migrationBuilder.DropTable(
                 name: "localUsersDb");
 
             migrationBuilder.DropTable(
-                name: "workerDB");
+                name: "issueDB");
 
             migrationBuilder.DropTable(
                 name: "adminDB");
 
             migrationBuilder.DropTable(
+                name: "statusDB");
+
+            migrationBuilder.DropTable(
                 name: "usersDB");
+
+            migrationBuilder.DropTable(
+                name: "workerDB");
         }
     }
 }

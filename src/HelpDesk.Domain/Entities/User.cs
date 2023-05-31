@@ -36,5 +36,7 @@ namespace HelpDesk.Domain.Entities
         public string PhoneNumber { get; set; }
         [Required]
         public string Role { get;set; }
+
+        public ICollection<Issue> Issues { get; set; }
     }
 }
