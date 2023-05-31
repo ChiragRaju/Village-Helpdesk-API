@@ -24,7 +24,7 @@ namespace HelpDesk.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
             var login = await _adminRepository.Login(model);
-            //if (login.Email == null || login.Password == null)
+           
             if(login.admin == null || string.IsNullOrEmpty(login.Token))
             {
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
