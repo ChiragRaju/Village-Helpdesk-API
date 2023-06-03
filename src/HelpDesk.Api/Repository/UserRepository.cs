@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using HelpDesk.Domain.Data;
@@ -25,15 +26,11 @@ namespace HelpDesk.Domain.Repository
             secretKey = configuration.GetValue<string>("ApiSettings:Secret");
         }
         
-        public bool isUnique(string Aadharnumber)
+        public bool isUnique(string Aadharnumber, string PhoneNumber)
         {
-            var user = _context.usersDB.FirstOrDefault(x => x.AadharNumber == Aadharnumber);
-
-            if (user == null)
-            {
-                return true;
-            }
-            return false;
+            var user = _context.usersDB.FirstOrDefault(x => x.AadharNumber == Aadharnumber || x.PhoneNumber== PhoneNumber);
+            
+            return user == null;
         }
 
         
@@ -94,6 +91,7 @@ namespace HelpDesk.Domain.Repository
             await _context.SaveChangesAsync();
             user.AadharNumber = "";
             return user;
+
         }
     }
 }

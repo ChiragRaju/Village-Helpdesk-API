@@ -19,8 +19,8 @@ namespace HelpDesk.Api.Repository
             var newIssue = new Issue
             {
                 Description = issueDTO.Description,
-                ImageUrl = issueDTO.ImageUrl,
-                UserId = issueDTO.UserId
+                ImageUrl = issueDTO.ImageUrl             
+                
             };
             _context.issueDB.Add(newIssue);
             await _context.SaveChangesAsync();
@@ -66,6 +66,7 @@ namespace HelpDesk.Api.Repository
                 Description = issue.Description,
                 ImageUrl = issue.ImageUrl,
                 UserId = issue.UserId
+               
             };
             return issueDTO;
         }

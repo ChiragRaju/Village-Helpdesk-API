@@ -37,13 +37,13 @@ namespace HelpDesk.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
-            bool ifAadharUnique = _userRepository.isUnique(model.AadharNumber);
+            bool ifAadharUnique = _userRepository.isUnique(model.AadharNumber,model.PhoneNumber);
 
             if (!ifAadharUnique)
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.ErrorMessage.Add("Aadhar Number already Exists");
+                _response.ErrorMessage.Add("Aadhar Number already Exists or Phone Number already Exists");
                 return BadRequest(_response);
             }
             var user = await _userRepository.Register(model);
@@ -58,6 +58,7 @@ namespace HelpDesk.Api.Controllers
             _response.IsSuccess = true;
             return Ok(_response);
         }
+        
 
     }
 }

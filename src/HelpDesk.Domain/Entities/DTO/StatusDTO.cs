@@ -10,5 +10,7 @@ namespace HelpDesk.Domain.Entities.DTO
     {
         public int Id { get; set; }
         public string StatusDescription { get; set; }
+
+        public bool IsCompleted { get; set; }   
     }
 }

@@ -26,6 +26,7 @@ namespace HelpDesk.Api.Repository
              usercreateDTO.FirstName = newUser.FirstName;
             usercreateDTO.LastName = newUser.LastName;
             usercreateDTO.AadharNumber = newUser.AadharNumber;
+            usercreateDTO.PhoneNumber= newUser.PhoneNumber; 
             return usercreateDTO;
         }
 
@@ -47,7 +48,8 @@ namespace HelpDesk.Api.Repository
                 UserId = user.UserId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                AadharNumber = user.AadharNumber
+                AadharNumber = user.AadharNumber,
+                PhoneNumber=user.PhoneNumber
             }).ToList();
 
             return userDTOs;
@@ -65,7 +67,8 @@ namespace HelpDesk.Api.Repository
                 UserId = user.UserId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                AadharNumber = user.AadharNumber
+                AadharNumber = user.AadharNumber,
+                PhoneNumber = user.PhoneNumber  
             };
             return userDTO;
         }
@@ -80,6 +83,7 @@ namespace HelpDesk.Api.Repository
             existingUser.FirstName = userupdateDTO.FirstName;
             existingUser.LastName = userupdateDTO.LastName;
             existingUser.AadharNumber = userupdateDTO.AadharNumber;
+            existingUser.PhoneNumber=userupdateDTO.PhoneNumber; 
 
             await _context.SaveChangesAsync();
             return userupdateDTO;

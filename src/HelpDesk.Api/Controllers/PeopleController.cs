@@ -3,6 +3,7 @@ using HelpDesk.Api.Extensions;
 using HelpDesk.Application.Endpoints.People.Commands;
 using HelpDesk.Application.Endpoints.People.Queries;
 using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpDesk.Api.Controllers;

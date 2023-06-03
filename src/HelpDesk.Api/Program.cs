@@ -13,6 +13,17 @@ using HelpDesk.Domain.Repository.IRepository;
 using HelpDesk.Domain.Repository;
 using HelpDesk.Api.Repository.IRepository;
 using HelpDesk.Api.Repository;
+using Microsoft.Extensions.Configuration;
+using FluentAssertions.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Reflection;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
 
 // Configure Services
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +33,7 @@ builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IUserCrudRepository, UserCrudRepository>();
 builder.Services.AddScoped<IIssueCrudRepository, IssueCrudRepository>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();  
 // TODO: Remove this line if you want to return the Server header
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
@@ -43,10 +55,26 @@ builder.Services.AddApiVersioning(options =>
 
 builder.Services.AddScoped<IPrincipalService, PrincipalService>();
 
+
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HelpDesk.Api", Version = "v1" });
+});
+
+var provider=builder.Services.BuildServiceProvider();
+var configuration=provider.GetRequiredService<IConfiguration>();
+
+builder.Services.AddCors(options =>
+{
+    var frontendurl = configuration.GetValue<string>("frontend_url");
+
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins(frontendurl).AllowAnyMethod().AllowAnyHeader();
+    });
 });
 
 // Configure Application
@@ -58,8 +86,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HelpDesk.Api v1"));
 }
+else
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+}
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+
 
 app.UseRouting();
 

@@ -16,6 +16,8 @@ namespace HelpDesk.Domain.Entities
         [Required]
         public string StatusDescription { get; set; }
 
-        public ICollection<Issue> Issues { get; set; }  
+        public ICollection<Issue> Issues { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }

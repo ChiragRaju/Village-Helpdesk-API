@@ -69,10 +69,10 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 1,
                             ConfirmPassword = "shanu548115@",
                             CreatedBy = 1,
-                            CreatedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5485),
+                            CreatedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1513),
                             Email = "shanu@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5500),
+                            ModifiedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1525),
                             Name = "Shanu Kumar",
                             Password = "shanu548115@"
                         },
@@ -81,10 +81,10 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 2,
                             ConfirmPassword = "sid@",
                             CreatedBy = 2,
-                            CreatedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5513),
+                            CreatedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1529),
                             Email = "sid@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 5, 30, 16, 20, 23, 785, DateTimeKind.Local).AddTicks(5515),
+                            ModifiedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1530),
                             Name = "Siddhant Kashyap",
                             Password = "sid@"
                         });
@@ -284,6 +284,9 @@ namespace HelpDesk.Domain.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ModifiedBy")
                         .HasColumnType("int");

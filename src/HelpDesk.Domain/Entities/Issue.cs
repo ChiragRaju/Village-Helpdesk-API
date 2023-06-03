@@ -21,6 +21,7 @@ namespace HelpDesk.Domain.Entities
         [ForeignKey("User")]
         public int UserId { get;set; }
         public User user { get; set; }
+
         [ForeignKey("Status")]
 
         public int StatusId { get; set; }

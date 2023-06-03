@@ -10,8 +10,10 @@ namespace HelpDesk.Domain.Repository.IRepository
 {
     public interface IUserRepository
     {
-        bool isUnique(string Aadharnumber);
+        bool isUnique(string Aadharnumber,string PhoneNumber);
         Task<LoginResponseUserDTO> Login(LoginRequestUserDTO loginRequestuserDTO);
         Task<User> Register(RegistrationRequestDTO registrationRequestDTO);
+
+        //Task<bool> Register(RegistrationRequestDTO registrationRequestDTO);
     }
 }
