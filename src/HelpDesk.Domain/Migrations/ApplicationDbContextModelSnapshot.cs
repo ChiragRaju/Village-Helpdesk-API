@@ -69,10 +69,10 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 1,
                             ConfirmPassword = "shanu548115@",
                             CreatedBy = 1,
-                            CreatedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1513),
+                            CreatedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(6999),
                             Email = "shanu@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1525),
+                            ModifiedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7014),
                             Name = "Shanu Kumar",
                             Password = "shanu548115@"
                         },
@@ -81,10 +81,10 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 2,
                             ConfirmPassword = "sid@",
                             CreatedBy = 2,
-                            CreatedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1529),
+                            CreatedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7019),
                             Email = "sid@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 6, 1, 11, 59, 41, 47, DateTimeKind.Local).AddTicks(1530),
+                            ModifiedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7020),
                             Name = "Siddhant Kashyap",
                             Password = "sid@"
                         });
@@ -145,9 +145,6 @@ namespace HelpDesk.Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IssueId"));
 
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
@@ -168,107 +165,14 @@ namespace HelpDesk.Domain.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WorkerId")
+                    b.Property<int>("UserRefId")
                         .HasColumnType("int");
 
                     b.HasKey("IssueId");
 
-                    b.HasIndex("AdminId");
+                    b.HasIndex("UserRefId");
 
-                    b.HasIndex("StatusId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WorkerId");
-
-                    b.ToTable("issueDB");
-                });
-
-            modelBuilder.Entity("HelpDesk.Domain.Entities.LocalUsers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AadharNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("localUsersDb");
+                    b.ToTable("issueDb");
                 });
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.Status", b =>
@@ -435,70 +339,16 @@ namespace HelpDesk.Domain.Migrations
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.Issue", b =>
                 {
-                    b.HasOne("HelpDesk.Domain.Entities.Admin", "admin")
+                    b.HasOne("HelpDesk.Domain.Entities.User", "User")
                         .WithMany("Issues")
-                        .HasForeignKey("AdminId");
-
-                    b.HasOne("HelpDesk.Domain.Entities.Status", "status")
-                        .WithMany("Issues")
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("UserRefId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HelpDesk.Domain.Entities.User", "user")
-                        .WithMany("Issues")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HelpDesk.Domain.Entities.Worker", "worker")
-                        .WithMany("Issues")
-                        .HasForeignKey("WorkerId");
-
-                    b.Navigation("admin");
-
-                    b.Navigation("status");
-
-                    b.Navigation("user");
-
-                    b.Navigation("worker");
-                });
-
-            modelBuilder.Entity("HelpDesk.Domain.Entities.LocalUsers", b =>
-                {
-                    b.HasOne("HelpDesk.Domain.Entities.Admin", "admin")
-                        .WithMany()
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HelpDesk.Domain.Entities.User", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("admin");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HelpDesk.Domain.Entities.Admin", b =>
-                {
-                    b.Navigation("Issues");
-                });
-
-            modelBuilder.Entity("HelpDesk.Domain.Entities.Status", b =>
-                {
-                    b.Navigation("Issues");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Issues");
-                });
-
-            modelBuilder.Entity("HelpDesk.Domain.Entities.Worker", b =>
                 {
                     b.Navigation("Issues");
                 });

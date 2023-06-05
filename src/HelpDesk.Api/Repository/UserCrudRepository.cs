@@ -19,15 +19,27 @@ namespace HelpDesk.Api.Repository
             {
                 FirstName = usercreateDTO.FirstName,
                 LastName = usercreateDTO.LastName,
-                AadharNumber = usercreateDTO.AadharNumber
+                AadharNumber = usercreateDTO.AadharNumber,
+                Address = usercreateDTO.Address,
+                PostalCode = usercreateDTO.PostalCode,
+                City = usercreateDTO.City,
+                State = usercreateDTO.State,
+                Role = usercreateDTO.Role
             };
             _context.usersDB.Add(newUser);
             await _context.SaveChangesAsync();
-             usercreateDTO.FirstName = newUser.FirstName;
+            usercreateDTO.FirstName = newUser.FirstName;
             usercreateDTO.LastName = newUser.LastName;
             usercreateDTO.AadharNumber = newUser.AadharNumber;
-            usercreateDTO.PhoneNumber= newUser.PhoneNumber; 
+            usercreateDTO.PhoneNumber = newUser.PhoneNumber;
+            usercreateDTO.Address = newUser.Address;
+            usercreateDTO.PostalCode = newUser.PostalCode;
+            usercreateDTO.City = newUser.City;
+            usercreateDTO.State = newUser.State;
+            usercreateDTO.Role = newUser.Role;  
             return usercreateDTO;
+
+
         }
 
         public async Task DeleteUser(int userID)

@@ -9,30 +9,18 @@ using HelpDesk.Domain.Common;
 
 namespace HelpDesk.Domain.Entities
 {
-    public class Issue: AuditableEntity
+    public class Issue : AuditableEntity
     {
         [Key]
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]   
         public int IssueId { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public string ImageUrl { get; set; }
-        [ForeignKey("User")]
-        public int UserId { get;set; }
-        public User user { get; set; }
-
-        [ForeignKey("Status")]
-
-        public int StatusId { get; set; }
-        public Status status { get; set; }
-
-        [ForeignKey("Admin")]
-        public int? AdminId { get; set; }
-        public Admin admin { get; set; }
-
-        [ForeignKey("Worker")]
-        public int? WorkerId { get; set; }
-        public Worker worker { get; set; }
+        [Required]
+        [ForeignKey("User")]        
+        public int UserRefId { get; set; }
+        public User User { get; set; }
     }
 }

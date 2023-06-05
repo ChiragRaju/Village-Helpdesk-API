@@ -34,6 +34,30 @@ namespace HelpDesk.Api.Controllers
             _response.Result = loginResponse;
             return Ok(_response);
         }
+
+        [HttpGet("login")]
+
+        public async Task<IActionResult> Login(string aadharnumber,string phonenumber)
+        {
+            var model = new LoginRequestUserDTO
+            {
+                AadharNumber = aadharnumber,
+                PhoneNumber = phonenumber
+            };
+
+            var loginResponse = await _userRepository.Login(model);
+            if (loginResponse.user == null || string.IsNullOrEmpty(loginResponse.Token))
+            {
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessage.Add(" Username or Password is Incorrect");
+                return BadRequest(_response);
+            }
+            _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
+            _response.Result = loginResponse;
+            return Ok(_response);
+        }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
@@ -58,7 +82,25 @@ namespace HelpDesk.Api.Controllers
             _response.IsSuccess = true;
             return Ok(_response);
         }
-        
+        [HttpGet("register")]
+        public IActionResult Register(string aadharNumber, string phoneNumber)
+        {
+            bool ifAadharUnique = _userRepository.isUnique(aadharNumber, phoneNumber);
+
+            if (!ifAadharUnique)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessage.Add("Aadhar Number or Phone Number already exists");
+                return BadRequest(_response);
+            }
+
+            _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
+            return Ok(_response);
+        }
+
+
 
     }
 }

@@ -19,10 +19,10 @@ namespace HelpDesk.Api.Repository
             var newIssue = new Issue
             {
                 Description = issueDTO.Description,
-                ImageUrl = issueDTO.ImageUrl             
-                
+                ImageUrl = issueDTO.ImageUrl,
+                UserRefId = issueDTO.UserId
             };
-            _context.issueDB.Add(newIssue);
+            _context.issueDb.Add(newIssue);
             await _context.SaveChangesAsync();
 
             issueDTO.IssueId = newIssue.IssueId;
@@ -30,32 +30,33 @@ namespace HelpDesk.Api.Repository
 
         }
 
+
         public async Task DeleteIssue(int issueId)
         {
-            var issue = await _context.issueDB.FindAsync(issueId);
+            var issue = await _context.issueDb.FindAsync(issueId);
             if(issue!=null)
             {
-                _context.issueDB.Remove(issue);
+                _context.issueDb.Remove(issue);
                 await _context.SaveChangesAsync();  
             }
         }
 
         public async Task<IEnumerable<IssueDTO>> GetAllIssues()
         {
-            var issue = await _context.issueDB.ToListAsync();
+            var issue = await _context.issueDb.ToListAsync();
             var issueDTOs = issue.Select(issue => new IssueDTO
             {
                 IssueId = issue.IssueId,
                 Description = issue.Description,
                 ImageUrl = issue.ImageUrl,
-                UserId = issue.UserId
+                //UserId = issue.UserId
             }).ToList();
             return issueDTOs;
         }
 
         public async Task<IssueDTO> GetIssueById(int issueId)
         {
-            var issue = await _context.issueDB.FindAsync(issueId);
+            var issue = await _context.issueDb.FindAsync(issueId);
             if(issue==null)
             {
                 return null;
@@ -65,7 +66,7 @@ namespace HelpDesk.Api.Repository
                 IssueId = issue.IssueId,
                 Description = issue.Description,
                 ImageUrl = issue.ImageUrl,
-                UserId = issue.UserId
+                //UserId = issue.UserId
                
             };
             return issueDTO;
@@ -73,20 +74,20 @@ namespace HelpDesk.Api.Repository
 
         public async Task<IEnumerable<IssueDTO>> GetIssuesByUserId(int userId)
         {
-           var issues=await _context.issueDB.Where(issue=>issue.UserId==userId).ToListAsync();
+           var issues=await _context.issueDb.Where(issue=>issue.UserRefId==userId).ToListAsync();
             var issueDTOs=issues.Select(issue=>new IssueDTO
             {
                 IssueId=issue.IssueId,
                 Description=issue.Description,
                 ImageUrl=issue.ImageUrl,
-                UserId=issue.UserId
+                //UserId=issue.UserId
             }).ToList();
             return issueDTOs;
         }
 
         public async Task<IssueDTO> UpdateIssue(IssueDTO issue)
         {
-            var existingIssue = await _context.issueDB.FindAsync(issue.IssueId);
+            var existingIssue = await _context.issueDb.FindAsync(issue.IssueId);
             if(existingIssue==null) { return null; }
 
             existingIssue.IssueId = issue.IssueId;

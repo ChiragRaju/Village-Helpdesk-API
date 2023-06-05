@@ -13,13 +13,14 @@ namespace HelpDesk.Domain.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        public DbSet<LocalUsers> localUsersDb { get; set; }
+        
         public DbSet<User> usersDB { get; set; }
         public DbSet<Admin> adminDB { get; set; }
-        public DbSet<Worker> workerDB { get; set; }
-        public DbSet<Issue> issueDB { get; set; }
+        public DbSet<Worker> workerDB { get; set; }      
         public DbSet<Feedback> feedbackDB { get; set; } 
-        public DbSet<Status> statusDB { get; set; } 
+        public DbSet<Status> statusDB { get; set; }
+        public DbSet<Issue> issueDb { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Admin>().HasData(

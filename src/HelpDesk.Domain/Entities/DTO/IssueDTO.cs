@@ -11,8 +11,10 @@ namespace HelpDesk.Domain.Entities.DTO
         public int IssueId { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+
         public int UserId { get; set; }
-        public UserCrudDTO User { get; set; }   
+       // public UserCrudDTO User { get; set; }
+         
 
     }
 }

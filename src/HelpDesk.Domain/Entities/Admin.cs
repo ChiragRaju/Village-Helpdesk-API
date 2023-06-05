@@ -26,6 +26,6 @@ namespace HelpDesk.Domain.Entities
         [Required]
         public string ConfirmPassword { get; set; }
 
-        public ICollection<Issue> Issues { get; set; }  
+        //public ICollection<Issue> Issues { get; set; }  
     }
 }

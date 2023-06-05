@@ -37,6 +37,31 @@ namespace HelpDesk.Api.Controllers
             _response.Result = login;
             return Ok(_response);
         }
+        [HttpGet("login")]
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            var model = new LoginRequestDTO
+            {
+                Email = email,
+                Password = password
+            };
+
+            var login = await _adminRepository.Login(model);
+
+            if (login.admin == null || string.IsNullOrEmpty(login.Token))
+            {
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.ErrorMessage.Add("Email or Password is Incorrect or empty");
+                return BadRequest(_response);
+            }
+
+            _response.StatusCode = HttpStatusCode.OK;
+            _response.IsSuccess = true;
+            _response.Result = login;
+            return Ok(_response);
+        }
+
 
 
 

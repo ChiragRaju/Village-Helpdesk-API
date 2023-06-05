@@ -1,4 +1,5 @@
 using HelpDesk.Api.Repository.IRepository;
+using HelpDesk.Domain.Entities;
 using HelpDesk.Domain.Entities.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,7 @@ namespace HelpDesk.Api.Controllers
 
             return CreatedAtAction(nameof(GetIssue), new { issueId = createdIssue.IssueId }, createdIssue);
         }
+
 
         [HttpPut("{issueId}")]
         public async Task<ActionResult<IssueDTO>> UpdateIssue(int issueId, IssueDTO issue)
