@@ -4,6 +4,7 @@ using HelpDesk.Domain.Entities.DTO;
 using HelpDesk.Domain.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HelpDesk.Api.Controllers
 {
@@ -58,47 +59,92 @@ namespace HelpDesk.Api.Controllers
             _response.Result = loginResponse;
             return Ok(_response);
         }
+        //[HttpPost("register")]
+        //public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
+        //{
+        //    bool ifAadharUnique = _userRepository.isUnique(model.AadharNumber,model.PhoneNumber);
+
+        //    if (!ifAadharUnique)
+        //    {
+        //        _response.StatusCode = HttpStatusCode.BadRequest;
+        //        _response.IsSuccess = false;
+        //        _response.ErrorMessage.Add("Aadhar Number already Exists or Phone Number already Exists");
+        //        return BadRequest(_response);
+        //    }
+        //    var user = await _userRepository.Register(model);
+        //    if (user == null)
+        //    {
+        //        _response.StatusCode = HttpStatusCode.BadRequest;
+        //        _response.IsSuccess = false;
+        //        _response.ErrorMessage.Add("Error while registration");
+        //        return BadRequest(_response);
+        //    }
+        //    _response.StatusCode = HttpStatusCode.OK;
+        //    _response.IsSuccess = true;
+        //    return Ok(_response);
+        //}
+        //[HttpGet("register")]
+        //public IActionResult Register(string aadharNumber, string phoneNumber)
+        //{
+        //    bool ifAadharUnique = _userRepository.isUnique(aadharNumber, phoneNumber);
+
+        //    if (!ifAadharUnique)
+        //    {
+        //        _response.StatusCode = HttpStatusCode.BadRequest;
+        //        _response.IsSuccess = false;
+        //        _response.ErrorMessage.Add("Aadhar Number or Phone Number already exists");
+        //        return BadRequest(_response);
+        //    }
+
+        //    _response.StatusCode = HttpStatusCode.OK;
+        //    _response.IsSuccess = true;
+        //    return Ok(_response);
+        //}
+
+        //new
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
-            bool ifAadharUnique = _userRepository.isUnique(model.AadharNumber,model.PhoneNumber);
+            bool isAadharUnique = _userRepository.isUnique(model.AadharNumber, model.PhoneNumber);
 
-            if (!ifAadharUnique)
+            if (!isAadharUnique)
             {
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.IsSuccess = false;
-                _response.ErrorMessage.Add("Aadhar Number already Exists or Phone Number already Exists");
-                return BadRequest(_response);
+                APIResponse response = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    IsSuccess = false,
+                    ErrorMessage = new List<string> { "Aadhar Number already exists or Phone Number already exists" }
+                };
+                return BadRequest(response);
             }
+
             var user = await _userRepository.Register(model);
             if (user == null)
             {
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.IsSuccess = false;
-                _response.ErrorMessage.Add("Error while registration");
-                return BadRequest(_response);
+                APIResponse response = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    IsSuccess = false,
+                    ErrorMessage = new List<string> { "Error while registration" }
+                };
+                return BadRequest(response);
             }
-            _response.StatusCode = HttpStatusCode.OK;
-            _response.IsSuccess = true;
-            return Ok(_response);
-        }
-        [HttpGet("register")]
-        public IActionResult Register(string aadharNumber, string phoneNumber)
-        {
-            bool ifAadharUnique = _userRepository.isUnique(aadharNumber, phoneNumber);
 
-            if (!ifAadharUnique)
+            APIResponse successResponse = new APIResponse
             {
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.IsSuccess = false;
-                _response.ErrorMessage.Add("Aadhar Number or Phone Number already exists");
-                return BadRequest(_response);
-            }
-
-            _response.StatusCode = HttpStatusCode.OK;
-            _response.IsSuccess = true;
-            return Ok(_response);
+                StatusCode = HttpStatusCode.OK,
+                IsSuccess = true
+            };
+            return Ok(successResponse);
         }
+
+
+
+    }
+
+
+
 
 
 

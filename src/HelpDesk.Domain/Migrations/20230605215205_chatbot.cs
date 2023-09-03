@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HelpDesk.Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class testing : Migration
+    public partial class chatbot : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,25 @@ namespace HelpDesk.Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_adminDB", x => x.AdminId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "chatMessage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BotResponse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_chatMessage", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,8 +183,8 @@ namespace HelpDesk.Domain.Migrations
                 columns: new[] { "AdminId", "ConfirmPassword", "CreatedBy", "CreatedOn", "Email", "ModifiedBy", "ModifiedOn", "Name", "Password" },
                 values: new object[,]
                 {
-                    { 1, "shanu548115@", 1, new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(6999), "shanu@gmail.com", 1, new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7014), "Shanu Kumar", "shanu548115@" },
-                    { 2, "sid@", 2, new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7019), "sid@gmail.com", 1, new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7020), "Siddhant Kashyap", "sid@" }
+                    { 1, "shanu548115@", 1, new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(33), "shanu@gmail.com", 1, new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(42), "Shanu Kumar", "shanu548115@" },
+                    { 2, "sid@", 2, new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(47), "sid@gmail.com", 1, new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(48), "Siddhant Kashyap", "sid@" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -194,6 +213,9 @@ namespace HelpDesk.Domain.Migrations
         {
             migrationBuilder.DropTable(
                 name: "adminDB");
+
+            migrationBuilder.DropTable(
+                name: "chatMessage");
 
             migrationBuilder.DropTable(
                 name: "feedbackDB");

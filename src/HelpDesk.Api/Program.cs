@@ -33,7 +33,8 @@ builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IUserCrudRepository, UserCrudRepository>();
 builder.Services.AddScoped<IIssueCrudRepository, IssueCrudRepository>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-builder.Services.AddScoped<IStatusRepository, StatusRepository>();  
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IChatBotRepository, ChatBotRepository>();
 // TODO: Remove this line if you want to return the Server header
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 

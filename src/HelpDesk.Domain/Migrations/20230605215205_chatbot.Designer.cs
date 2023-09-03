@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HelpDesk.Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230605104441_testing")]
-    partial class testing
+    [Migration("20230605215205_chatbot")]
+    partial class chatbot
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,10 +72,10 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 1,
                             ConfirmPassword = "shanu548115@",
                             CreatedBy = 1,
-                            CreatedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(6999),
+                            CreatedOn = new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(33),
                             Email = "shanu@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7014),
+                            ModifiedOn = new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(42),
                             Name = "Shanu Kumar",
                             Password = "shanu548115@"
                         },
@@ -84,13 +84,49 @@ namespace HelpDesk.Domain.Migrations
                             AdminId = 2,
                             ConfirmPassword = "sid@",
                             CreatedBy = 2,
-                            CreatedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7019),
+                            CreatedOn = new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(47),
                             Email = "sid@gmail.com",
                             ModifiedBy = 1,
-                            ModifiedOn = new DateTime(2023, 6, 5, 16, 14, 41, 528, DateTimeKind.Local).AddTicks(7020),
+                            ModifiedOn = new DateTime(2023, 6, 6, 3, 22, 4, 986, DateTimeKind.Local).AddTicks(48),
                             Name = "Siddhant Kashyap",
                             Password = "sid@"
                         });
+                });
+
+            modelBuilder.Entity("HelpDesk.Domain.Entities.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BotResponse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("chatMessage");
                 });
 
             modelBuilder.Entity("HelpDesk.Domain.Entities.Feedback", b =>

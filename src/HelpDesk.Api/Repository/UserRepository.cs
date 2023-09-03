@@ -73,24 +73,31 @@ namespace HelpDesk.Domain.Repository
 
         public async Task<User> Register(RegistrationRequestDTO registrationRequestDTO)
         {
-
-            User user = new()
+            try
             {
-                FirstName = registrationRequestDTO.FirstName,
-                LastName = registrationRequestDTO.LastName,
-                AadharNumber = registrationRequestDTO.AadharNumber,
-                Address = registrationRequestDTO.Address,
-                City = registrationRequestDTO.City,
-                PostalCode = registrationRequestDTO.PostalCode,
-                State = registrationRequestDTO.State,
-                PhoneNumber = registrationRequestDTO.PhoneNumber,
-                Role = registrationRequestDTO.Role
-                //Email = registrationRequestDTO.Email
-            };
-            _context.usersDB.Add(user);
-            await _context.SaveChangesAsync();
-            user.AadharNumber = "";
-            return user;
+                User user = new()
+                {
+                    FirstName = registrationRequestDTO.FirstName,
+                    LastName = registrationRequestDTO.LastName,
+                    AadharNumber = registrationRequestDTO.AadharNumber,
+                    Address = registrationRequestDTO.Address,
+                    City = registrationRequestDTO.City,
+                    PostalCode = registrationRequestDTO.PostalCode,
+                    State = registrationRequestDTO.State,
+                    PhoneNumber = registrationRequestDTO.PhoneNumber,
+                    Role = registrationRequestDTO.Role
+                    //Email = registrationRequestDTO.Email
+                };
+                _context.usersDB.Add(user);
+                await _context.SaveChangesAsync();
+                user.AadharNumber = "";
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred during user registration : {ex.Message}");
+                throw;
+            }
 
         }
     }

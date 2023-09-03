@@ -20,6 +20,7 @@ namespace HelpDesk.Domain.Data
         public DbSet<Feedback> feedbackDB { get; set; } 
         public DbSet<Status> statusDB { get; set; }
         public DbSet<Issue> issueDb { get; set; }
+        public DbSet<ChatMessage> chatMessage { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +65,8 @@ namespace HelpDesk.Domain.Data
                .WithMany()
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(modelBuilder);
            
         }
     }
